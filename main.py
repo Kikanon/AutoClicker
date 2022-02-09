@@ -25,8 +25,8 @@ class App(tkinter.Tk):
         close_button.pack(side=RIGHT)
         window.pack(expand=1, fill=BOTH)
 
-        #bind title bar motion to the move window function
-        self.title_bar.bind('<B1-Motion>', self.get_pos)
+        # moving the window
+        self.title_bar.bind('<Button-1>', self.get_pos)
         
         self.frame1 = LabelFrame(window, height=44, text="Click interval")
         self.frame1.pack(fill=X, padx=2, pady=2)
@@ -44,10 +44,8 @@ class App(tkinter.Tk):
         xwin = xwin - startx
 
 
-        def move_window(event):
-            self.geometry("443x335" + '+{0}+{1}'.format(event.x_root + xwin, event.y_root + ywin))
-        startx = event.x_root
-        starty = event.y_root
+        def move_window(event1):
+            self.geometry("443x335" + '+{0}+{1}'.format(event1.x_root + xwin, event1.y_root + ywin))
 
         self.title_bar.bind('<B1-Motion>', move_window)
 
