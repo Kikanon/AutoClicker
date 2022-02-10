@@ -1,6 +1,7 @@
 from cgitb import grey
 import tkinter
 from tkinter import *
+import tkinter.font
 from turtle import bgcolor
 
 class App(tkinter.Tk):
@@ -15,14 +16,16 @@ class App(tkinter.Tk):
 
         self.resizable(False,False)
         self.geometry('443x335')# don t change +0+0
-
-        self.title_bar = Frame(self, bg='white', bd=1)
-        close_button = Button(self.title_bar, text='X', command=self.destroy)
+        self.title_bar = Frame(self, bg='white', bd=0, height=3)
+        self.close_button = Button(self.title_bar, text='✕',
+         command=self.destroy, background="WHITE", bd=0, width=6, foreground="lightgray", font=("Arial", 10))
         window = Canvas(self, bg='#f0f0f0')
 
         # pack the widgets
         self.title_bar.pack(side=TOP, fill=X)
-        close_button.pack(side=RIGHT)
+        self.close_button.pack(side=RIGHT)
+        self.close_button.bind("<Enter>", self.exit_hover)
+        self.close_button.bind("<Leave>", self.exit_unhover)
         window.pack(expand=1, fill=BOTH)
 
         # moving the window
@@ -49,6 +52,11 @@ class App(tkinter.Tk):
 
         self.title_bar.bind('<B1-Motion>', move_window)
 
+    def exit_hover(self, event):
+        self.close_button.config(background="RED")
+
+    def exit_unhover(self, event):
+        self.close_button.config(background="WHITE")
 
 if __name__ == '__main__':
     myApp = App()
