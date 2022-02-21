@@ -2,9 +2,11 @@ from cgitb import grey
 import tkinter
 from tkinter import *
 import tkinter.font
-from turtle import bgcolor
+from turtle import back, bgcolor
 
 class App(tkinter.Tk):
+    window_size = '442x365'
+
     def __init__(self):
         super().__init__()
         self.miliseconds = tkinter.StringVar(value="0")
@@ -15,24 +17,43 @@ class App(tkinter.Tk):
         self.title("Auto Clicker 1.0")
 
         self.resizable(False,False)
-        self.geometry('443x335')# don t change +0+0
-        self.title_bar = Frame(self, bg='white', bd=0, height=3)
+        self.geometry(self.window_size)# don t change +0+0
+
+        self.window = Frame(self, bd=1)
+        self.window.pack(fill=BOTH)
+
+        # todo: https://stackoverflow.com/questions/4066027/making-tkinter-windows-show-up-in-the-taskbar
+
+        self.title_bar = Frame(self.window, bg='white', bd=0, height=3)
+        
         self.close_button = Button(self.title_bar, text='✕',
-         command=self.destroy, background="WHITE", bd=0, width=6, foreground="lightgray", font=("Arial", 10))
-        window = Canvas(self, bg='#f0f0f0')
+         command=self.destroy, background="WHITE", bd=0, width=6, foreground="black", font=("Calibri", 12))
+        gray_area = Canvas(self.window, bg='#f0f0f0')
 
         # pack the widgets
-        self.title_bar.pack(side=TOP, fill=X)
+        
         self.close_button.pack(side=RIGHT)
         self.close_button.bind("<Enter>", self.exit_hover)
         self.close_button.bind("<Leave>", self.exit_unhover)
-        window.pack(expand=1, fill=BOTH)
 
+        
+        self.title_bar.pack(side=TOP, fill=X)
+        gray_area.pack(expand=1, fill=BOTH)
+            
         # moving the window
         self.title_bar.bind('<Button-1>', self.get_pos)
         
-        self.frame1 = LabelFrame(window, height=44, text="Click interval")
+        self.frame1 = LabelFrame(gray_area, height=44, text="Click interval")
         self.frame1.pack(fill=X, padx=2, pady=2)
+
+        Entry(self.frame1, width=7).pack(side=LEFT)
+        Label(self.frame1, text="hours").pack(side=LEFT)
+        Entry(self.frame1, width=7).pack(side=LEFT)
+        Label(self.frame1, text="mins").pack(side=LEFT)
+        Entry(self.frame1, width=7).pack(side=LEFT)
+        Label(self.frame1, text="secs").pack(side=LEFT)
+        Entry(self.frame1, width=7).pack(side=LEFT)
+        Label(self.frame1, text="miliseconds").pack(side=LEFT)
 
         #LabelFrame(self, text="This is a LabelFrame").pack(fill=X)
         #labelframe.pack(fill="both", expand="yes")
@@ -48,7 +69,7 @@ class App(tkinter.Tk):
 
 
         def move_window(event1):
-            self.geometry("443x335" + '+{0}+{1}'.format(event1.x_root + xwin, event1.y_root + ywin))
+            self.geometry(self.window_size + '+{0}+{1}'.format(event1.x_root + xwin, event1.y_root + ywin))
 
         self.title_bar.bind('<B1-Motion>', move_window)
 
